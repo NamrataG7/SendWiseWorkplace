@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build
+.next/
+out/
+build/
+dist/
+*.tsbuildinfo
+
+# Env
+.env
+.env.local
+.env*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor
+.vscode/
+.idea/
+.DS_Store
+
+# Android
+workplace-keyboard/.gradle/
+workplace-keyboard/build/
+workplace-keyboard/app/build/
+workplace-keyboard/local.properties
+*.iml
+
+# Extension build
+workplace-extension/dist/
+workplace-extension/*.zip
+
+# Supabase
+.supabase/
