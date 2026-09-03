@@ -31,12 +31,18 @@
         "https://teams.live.com/*",
         "https://chat.google.com/*"
       ],
-      "js": ["classifier.js", "content.js"],
+      "js": ["classifier.js", "rf-classifier.js", "content.js"],
       "run_at": "document_idle",
       "all_frames": true
     }
   ],
   "options_page": "options.html",
+  "web_accessible_resources": [
+    {
+      "resources": ["models/rf_binary.json", "models/rf_category.json"],
+      "matches": ["<all_urls>"]
+    }
+  ],
   "icons": {
     "16": "icon16.png",
     "48": "icon48.png",

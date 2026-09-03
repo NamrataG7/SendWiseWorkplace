@@ -61,7 +61,12 @@
       if (!settings.enabled) return;
       const text = getText(el);
       if (!text || text.length < 3) return;
-      const result = window.SWClassifier && window.SWClassifier.classify(text);
+      let result = null;
+      if (window.SWRfClassifier) {
+        result = await window.SWRfClassifier.classifyHybrid(text);
+      } else if (window.SWClassifier) {
+        result = window.SWClassifier.classify(text);
+      }
       if (!result) return;
       if (settings.categories && settings.categories[result.category] === false) return;
       if ((SEVERITY_RANK[result.severity] ?? -1) < MIN_SEVERITY) return;
