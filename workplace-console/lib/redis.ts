@@ -1,5 +1,5 @@
 /**
- * Redis client singleton for SendWise Parental Dashboard.
+ * Redis client singleton for SendWiseWorkplace Console.
  *
  * If REDIS_URL is not set (local dev), falls back to an in-memory Map-backed
  * stub implementing the subset of ioredis commands used by our API routes:

@@ -2,8 +2,9 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'SendWise Parental Dashboard',
-  description: 'Comprehensive child safety monitoring',
+  title: 'SendWiseWorkplace Console',
+  description:
+    'Privacy-preserving workplace harassment nudge system — HR, PoSH IC, and EAP consoles.',
 };
 
 export default function RootLayout({

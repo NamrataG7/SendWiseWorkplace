@@ -1,7 +1,7 @@
 {
-  "name": "sendwise-parental-dashboard",
-  "version": "1.0.0",
-  "description": "SendWise Parental Dashboard - Comprehensive child safety monitoring",
+  "name": "workplace-console",
+  "version": "0.1.0",
+  "description": "SendWiseWorkplace Console — HR, PoSH IC, EAP consoles for workplace harassment incident routing.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -15,7 +15,6 @@
     "next": "14.0.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "recharts": "2.12.7",
     "zod": "^3.23.8"
   },
   "devDependencies": {

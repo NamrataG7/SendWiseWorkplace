@@ -24,7 +24,7 @@ export default function PrivacyPage() {
             ← Back to Dashboard
           </a>
           <h1 className="text-4xl font-bold text-gray-900 mt-4">Privacy Policy</h1>
-          <p className="text-gray-600 mt-2">SendWise Parental Dashboard</p>
+          <p className="text-gray-600 mt-2">SendWiseWorkplace Console</p>
         </div>
 
         {/* Content */}

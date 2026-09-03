@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>SendWiseWorkplace — Options</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        max-width: 640px;
+        margin: 32px auto;
+        padding: 0 16px;
+        color: #222;
+      }
+      h1 { font-size: 20px; margin-bottom: 4px; }
+      h2 { font-size: 15px; margin-top: 24px; }
+      .row { display: flex; align-items: center; gap: 8px; margin: 8px 0; }
+      label { user-select: none; }
+      input[type="text"] { width: 100%; padding: 6px; font-size: 13px; }
+      button { padding: 6px 12px; font-size: 13px; cursor: pointer; }
+      .counters { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+      .counter {
+        background: #f2f2f7; border-radius: 6px; padding: 12px; text-align: center;
+      }
+      .counter b { display: block; font-size: 22px; }
+      .muted { color: #666; font-size: 12px; }
+      .saved { color: #0a7d0a; font-size: 12px; margin-left: 8px; }
+    </style>
+  </head>
+  <body>
+    <h1>SendWiseWorkplace</h1>
+    <div class="muted">Privacy-preserving nudge system — v0.1.0 (MVP)</div>
+
+    <h2>Enabled</h2>
+    <div class="row">
+      <input type="checkbox" id="enabled" />
+      <label for="enabled">Extension active</label>
+      <span id="saved-enabled" class="saved"></span>
+    </div>
+
+    <h2>Categories</h2>
+    <div id="categories"></div>
+
+    <h2>Ingest URL</h2>
+    <div class="row">
+      <input type="text" id="ingest_url" placeholder="http://localhost:3000/api/violations" />
+    </div>
+    <div class="row">
+      <button id="save_url">Save URL</button>
+      <span id="saved-url" class="saved"></span>
+    </div>
+
+    <h2>Telemetry counters</h2>
+    <div class="counters">
+      <div class="counter"><b id="c_detected">0</b>detected</div>
+      <div class="counter"><b id="c_edited">0</b>edited</div>
+      <div class="counter"><b id="c_sent_anyway">0</b>sent anyway</div>
+      <div class="counter"><b id="c_cancelled">0</b>cancelled</div>
+    </div>
+    <div class="row" style="margin-top: 12px">
+      <button id="reset">Reset counters</button>
+    </div>
+
+    <script src="options.js"></script>
+  </body>
+</html>

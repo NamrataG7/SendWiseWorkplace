@@ -4,8 +4,11 @@ import {
   ViolationIngestSchema,
   FORBIDDEN_CONTENT_FIELDS,
 } from '@/lib/schema';
+import { routeCategory, routeCategorySync } from '@/lib/routing';
+import { getServiceSupabase } from '@/lib/supabase-admin';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 const RATE_LIMIT_PER_HOUR = 100;
 const LIST_CAP = 1000;
@@ -55,9 +58,54 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Cache a copy in Redis (best-effort — used by dev/inspection tooling).
   const listKey = `violations:${v.user_id_hash}`;
   await redis.lpush(listKey, JSON.stringify(v));
   await redis.ltrim(listKey, 0, LIST_CAP - 1);
 
-  return NextResponse.json({ ok: true });
+  // Route to the correct authority + insert into incidents.
+  const supabase = getServiceSupabase();
+  let decision;
+  try {
+    decision = await routeCategory(v.category, 'IN');
+  } catch {
+    decision = routeCategorySync(v.category);
+  }
+  const slaDeadline = new Date(
+    Date.parse(v.timestamp) + decision.sla_days * 86400_000,
+  ).toISOString();
+
+  if (supabase) {
+    const { error } = await supabase.from('incidents').insert({
+      employee_id_hash: v.user_id_hash,
+      timestamp: v.timestamp,
+      category: v.category,
+      severity: v.severity,
+      action: v.action,
+      platform: v.platform,
+      session_id: v.session_id,
+      assigned_to_role: decision.route_to,
+      sla_deadline: slaDeadline,
+      status: 'open',
+    });
+    if (error) {
+      // Log server-side; return ok anyway so the extension keeps firing.
+      // eslint-disable-next-line no-console
+      console.warn('[violations] insert failed:', error.message);
+    }
+  } else {
+    // eslint-disable-next-line no-console
+    console.info(
+      '[violations] Supabase not configured — skipping incident insert. Category=%s Route=%s SLA=%d',
+      v.category,
+      decision.route_to,
+      decision.sla_days,
+    );
+  }
+
+  return NextResponse.json({
+    ok: true,
+    routed_to: decision.route_to,
+    sla_deadline: slaDeadline,
+  });
 }

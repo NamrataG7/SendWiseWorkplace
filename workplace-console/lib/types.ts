@@ -1,76 +1,74 @@
 /**
- * Type definitions for SendWise Parental Dashboard
+ * Type definitions for SendWiseWorkplace Console.
+ *
+ * See docs/PLAN.md for the 11-category taxonomy and routing table.
  */
 
-export type SeverityLevel = 'urgent' | 'critical' | 'high' | 'medium' | 'low' | 'none';
+export type SeverityLevel = 'high' | 'medium' | 'low';
 
+// 11-category workplace taxonomy (docs/PLAN.md).
 export type IncidentCategory =
-  | 'harassment'
-  | 'threats'
-  | 'hate_speech'
-  | 'sexual_content'
-  | 'self_harm';
+  | 'sexual_harassment'
+  | 'hate_speech_caste_religion'
+  | 'hate_speech_gender_lgbtq'
+  | 'hate_speech_disability'
+  | 'hate_speech_race'
+  | 'threats_intimidation'
+  | 'harassment_general'
+  | 'bullying_persistent'
+  | 'power_abuse'
+  | 'self_harm'
+  | 'psychological_safety_erosion';
 
 export type Platform =
-  | 'instagram'
-  | 'discord'
-  | 'whatsapp'
-  | 'facebook'
-  | 'twitter'
-  | 'tiktok'
-  | 'snapchat'
-  | 'reddit'
+  | 'slack'
+  | 'teams'
+  | 'gmail'
+  | 'outlook'
+  | 'google_chat'
   | 'other';
 
 export type ActionTaken =
-  | 'blocked'
+  | 'detected'
   | 'edited'
   | 'sent_anyway'
   | 'cancelled';
 
+// Where an incident is routed for review. See PLAN.md routing table.
+export type RouteTarget = 'posh_ic' | 'hr' | 'eap' | 'legal' | 'security';
+
+// Console user roles.
+export type Role =
+  | 'employee'
+  | 'hr_partner'
+  | 'hr_head'
+  | 'posh_ic_member'
+  | 'posh_ic_chair'
+  | 'eap'
+  | 'legal';
+
+export type IncidentStatus = 'open' | 'in_review' | 'closed';
+
+/**
+ * Server-side incident row (mirrors `incidents` table in migration 004).
+ * Privacy: message content is analysed on-device and never persisted here.
+ */
 export interface Incident {
   id: string;
-  childId: string;
-  timestamp: Date;
-  platform: Platform;
+  employee_id_hash: string;
+  timestamp: string;
   category: IncidentCategory;
   severity: SeverityLevel;
-  // Privacy guarantee (SendWise paper §Privacy by Design):
-  // Message content is analyzed on-device only and NEVER leaves the child's device.
-  // Therefore no `detectedText` / message-content field exists on Incident.
   action: ActionTaken;
-  /**
-   * True when the parent has "Mark Reviewed"-ed this incident.
-   * Reviewed incidents are hidden from the home incident feed but preserved
-   * in Insights / CSV export / historical trends.
-   */
-  reviewed?: boolean;
-  detections: {
-    type: string;
-    matches: string[];
-  }[];
-  recommendation: string;
-  resources?: string[];
+  platform: Platform;
+  session_id: string;
+  assigned_to_role: RouteTarget;
+  sla_deadline: string;
+  status: IncidentStatus;
+  created_at: string;
 }
 
-export interface Child {
+export interface Employee {
   id: string;
-  name: string;
-  age: number;
-  avatarUrl?: string;
-}
-
-export interface DashboardStats {
-  totalIncidents: number;
-  criticalIncidents: number;
-  highPriorityIncidents: number;
-  messagesPrevented: number;
-  lastIncidentTime?: Date;
-}
-
-export interface CategoryStats {
-  category: IncidentCategory;
-  count: number;
-  trend: 'up' | 'down' | 'stable';
-  mostRecentSeverity: SeverityLevel;
+  display_name: string;
 }

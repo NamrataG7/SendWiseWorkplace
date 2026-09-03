@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "SendWiseWorkplace",
+  "version": "0.1.0",
+  "description": "Privacy-preserving on-device nudge system for workplace messaging (MVP).",
+  "permissions": ["activeTab", "scripting", "storage", "alarms"],
+  "host_permissions": [
+    "https://mail.google.com/*",
+    "https://outlook.live.com/*",
+    "https://outlook.office.com/*",
+    "https://outlook.office365.com/*",
+    "https://app.slack.com/*",
+    "https://*.slack.com/*",
+    "https://teams.microsoft.com/*",
+    "https://teams.live.com/*",
+    "https://chat.google.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://mail.google.com/*",
+        "https://outlook.live.com/*",
+        "https://outlook.office.com/*",
+        "https://outlook.office365.com/*",
+        "https://app.slack.com/*",
+        "https://*.slack.com/*",
+        "https://teams.microsoft.com/*",
+        "https://teams.live.com/*",
+        "https://chat.google.com/*"
+      ],
+      "js": ["classifier.js", "content.js"],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
+  "options_page": "options.html",
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+}
