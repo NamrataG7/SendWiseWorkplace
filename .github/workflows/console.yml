@@ -1,0 +1,37 @@
+name: Build Console
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'workplace-console/**'
+      - '.github/workflows/console.yml'
+  pull_request:
+    paths:
+      - 'workplace-console/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: workplace-console
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: workplace-console/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund || npm install --no-audit --no-fund
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Build
+        run: npm run build

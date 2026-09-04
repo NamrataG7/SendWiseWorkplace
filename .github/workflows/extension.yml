@@ -1,0 +1,38 @@
+name: Package Extension
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'workplace-extension/**'
+      - '.github/workflows/extension.yml'
+  pull_request:
+    paths:
+      - 'workplace-extension/**'
+  workflow_dispatch:
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate manifest.json
+        run: python3 -c "import json; json.load(open('workplace-extension/manifest.json')); print('manifest OK')"
+
+      - name: Validate model JSON
+        run: |
+          python3 -c "import json; json.load(open('workplace-extension/models/rf_binary.json')); print('rf_binary OK')"
+          python3 -c "import json; json.load(open('workplace-extension/models/rf_category.json')); print('rf_category OK')"
+
+      - name: Create zip
+        run: |
+          cd workplace-extension
+          zip -r ../workplace-extension.zip . -x '*.DS_Store'
+
+      - name: Upload extension artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: workplace-extension
+          path: workplace-extension.zip
+          if-no-files-found: error

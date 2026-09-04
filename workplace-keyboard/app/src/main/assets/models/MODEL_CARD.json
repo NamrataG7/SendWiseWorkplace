@@ -1,7 +1,7 @@
 {
   "model_name": "SendWise RandomForest Risk Classifier",
   "version": "1.0.0",
-  "trained_at": "2026-09-03T17:14:42Z",
+  "trained_at": "2026-08-25T08:18:24Z",
   "dataset": {
     "rows": 20122,
     "categories": [
@@ -37,7 +37,7 @@
     "recall": 0.957345971563981,
     "f1": 0.905829596412556,
     "roc_auc": 0.9981748848931045,
-    "pr_auc": 0.988473748726231,
+    "pr_auc": 0.9884738441021006,
     "specificity": 0.9774897680763983,
     "confusion_matrix": [
       [
