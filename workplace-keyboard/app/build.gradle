@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.sendwise.workplace.keyboard'
+    namespace 'com.safekeyboard'
     compileSdk 34
 
     defaultConfig {
